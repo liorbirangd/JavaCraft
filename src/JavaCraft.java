@@ -315,7 +315,7 @@ public class JavaCraft {
       ex.printStackTrace();
     }
   }
-
+//Check
   private static void lookAround() {
     System.out.println("You look around and see:");
     for (int y = Math.max(0, playerY - 1); y <= Math.min(playerY + 1, worldHeight - 1); y++) {
