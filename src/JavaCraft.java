@@ -47,6 +47,7 @@ public class JavaCraft {
   private static boolean unlockMode = false;
   private static boolean secretDoorUnlocked = false;
   private static boolean inSecretArea = false;
+  private int x;
   private static final int INVENTORY_SIZE = 100;
 
   public static void main(String[] args) {
