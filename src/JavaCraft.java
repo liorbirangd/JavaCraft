@@ -436,7 +436,7 @@ public class JavaCraft {
           System.out.println("You don't have " + getCraftedItemName(craftedItem) + " in your crafted items.");
         }
       }
-      //if id is not valid print message to player
+      //if id is not valid print message to
     } else {
       System.out.println("Invalid block number. Please enter a valid block number.");
       System.out.println(BLOCK_NUMBERS_INFO);
