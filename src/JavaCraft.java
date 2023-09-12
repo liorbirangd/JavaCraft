@@ -98,6 +98,7 @@ public class JavaCraft {
     craftedItems = new ArrayList<>();
   }
 
+  //
   // Generates random tiles in the world
   public static void generateWorld() {
     Random rand = new Random();
