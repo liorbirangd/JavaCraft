@@ -183,71 +183,103 @@ public class JavaCraft {
 
   // Initializes and starts running the game
   public static void startGame() {
+    // Inisialize flags
     Scanner scanner = new Scanner(System.in);
     boolean unlockMode = false;
     boolean craftingCommandEntered = false;
     boolean miningCommandEntered = false;
     boolean movementCommandEntered = false;
     boolean openCommandEntered = false;
+    // Main game loop
     while (true) {
       clearScreen();
       displayLegend();
       displayWorld();
       displayInventory();
+      // Get player input
       System.out.println(ANSI_CYAN
           + "Enter your action: 'WASD': Move, 'M': Mine, 'P': Place, 'C': Craft, 'I': Interact, 'Save': Save, 'Load': Load, 'Exit': Quit, 'Unlock': Unlock Secret Door"
           + ANSI_RESET);
       String input = scanner.next().toLowerCase();
+      // Check if player moved
       if (input.equalsIgnoreCase("w") || input.equalsIgnoreCase("up") ||
           input.equalsIgnoreCase("s") || input.equalsIgnoreCase("down") ||
           input.equalsIgnoreCase("a") || input.equalsIgnoreCase("left") ||
-          input.equalsIgnoreCase("d") || input.equalsIgnoreCase("right")) {
+          input.equalsIgnoreCase("d") || input.equalsIgnoreCase("right")) 
+        {
+        // If in unlock mode, raise movement flag
         if (unlockMode) {
           movementCommandEntered = true;
         }
         movePlayer(input);
-      } else if (input.equalsIgnoreCase("m")) {
+        
+      } 
+      //Check input for mining
+      else if (input.equalsIgnoreCase("m")) {
         if (unlockMode) {
           miningCommandEntered = true;
         }
         mineBlock();
-      } else if (input.equalsIgnoreCase("p")) {
+      } 
+      //Check input for placing block
+      else if (input.equalsIgnoreCase("p")) {
         displayInventory();
         System.out.print("Enter the block type to place: ");
         int blockType = scanner.nextInt();
         placeBlock(blockType);
-      } else if (input.equalsIgnoreCase("c")) {
+      } 
+      //Check input for crafting item
+      else if (input.equalsIgnoreCase("c")) {
         displayCraftingRecipes();
         System.out.print("Enter the recipe number to craft: ");
         int recipe = scanner.nextInt();
         craftItem(recipe);
-      } else if (input.equalsIgnoreCase("i")) {
+      } 
+      //Check input for interact action
+      else if (input.equalsIgnoreCase("i")) {
         interactWithWorld();
-      } else if (input.equalsIgnoreCase("save")) {
+      } 
+      //Check input for save avtion
+      else if (input.equalsIgnoreCase("save")) {
         System.out.print("Enter the file name to save the game state: ");
         String fileName = scanner.next();
         saveGame(fileName);
-      } else if (input.equalsIgnoreCase("load")) {
+      }
+      //Check input for load avtion 
+      else if (input.equalsIgnoreCase("load")) {
         System.out.print("Enter the file name to load the game state: ");
         String fileName = scanner.next();
         loadGame(fileName);
-      } else if (input.equalsIgnoreCase("exit")) {
+      } 
+      //Check input for exit
+      else if (input.equalsIgnoreCase("exit")) {
         System.out.println("Exiting the game. Goodbye!");
         break;
-      } else if (input.equalsIgnoreCase("look")) {
+      } 
+      //Check input for look around avtion
+      else if (input.equalsIgnoreCase("look")) {
         lookAround();
-      } else if (input.equalsIgnoreCase("unlock")) {
+      } 
+      //Check input for unlock action
+      else if (input.equalsIgnoreCase("unlock")) {
         unlockMode = true;
-      } else if (input.equalsIgnoreCase("getflag")) {
+      } 
+      //Check input for getting flag from server
+      else if (input.equalsIgnoreCase("getflag")) {
         getCountryAndQuoteFromServer();
         waitForEnter();
-      } else if (input.equalsIgnoreCase("open")) {
+      } 
+      //Check input for opening opening the "Secret Door"
+      //Requires to first use unlock, then move, craft, and mine
+      else if (input.equalsIgnoreCase("open")) {
         if (unlockMode && craftingCommandEntered && miningCommandEntered && movementCommandEntered) {
           secretDoorUnlocked = true;
           resetWorld();
           System.out.println("Secret door unlocked!");
           waitForEnter();
-        } else {
+        } 
+        //If not all requirements are met, they will all be reset
+        else {
           System.out.println("Invalid passkey. Try again!");
           waitForEnter();
           unlockMode = false;
@@ -256,15 +288,23 @@ public class JavaCraft {
           movementCommandEntered = false;
           openCommandEntered = false;
         }
-      } else {
+      } 
+      //Invalid input
+      else {
         System.out.println(ANSI_YELLOW + "Invalid input. Please try again." + ANSI_RESET);
       }
+      //Check if in unlock mode. 
       if (unlockMode) {
+        //if input c, rasie craft flag
         if (input.equalsIgnoreCase("c")) {
           craftingCommandEntered = true;
-        } else if (input.equalsIgnoreCase("m")) {
+        } 
+        //if input m, rasie mine flag
+        else if (input.equalsIgnoreCase("m")) {
           miningCommandEntered = true;
-        } else if (input.equalsIgnoreCase("open")) {
+        } 
+        //if input open, rasie open flag
+        else if (input.equalsIgnoreCase("open")) {
           openCommandEntered = true;
         }
       }
@@ -413,10 +453,10 @@ public class JavaCraft {
 
   // Try placing a block in the player’s position, remove from inventory
   public static void placeBlock(int blockType) {
-   //if the id is of a block
+    // if the id is of a block
     if (blockType >= 0 && blockType <= 7) {
       if (blockType <= 4) {
-         //check if inventory contains requested block, and place the item
+        // check if inventory contains requested block, and place the item
         if (inventory.contains(blockType)) {
           inventory.remove(Integer.valueOf(blockType));
           world[playerX][playerY] = blockType;
@@ -425,10 +465,10 @@ public class JavaCraft {
           System.out.println("You don't have " + getBlockName(blockType) + " in your inventory.");
         }
       }
-      //if the id is of a crafted item 
+      // if the id is of a crafted item
       else {
         int craftedItem = getCraftedItemFromBlockType(blockType);
-        //chekc if the crafted item list has the requested item, and place the item
+        // chekc if the crafted item list has the requested item, and place the item
         if (craftedItems.contains(craftedItem)) {
           craftedItems.remove(Integer.valueOf(craftedItem));
           world[playerX][playerY] = blockType;
@@ -437,7 +477,7 @@ public class JavaCraft {
           System.out.println("You don't have " + getCraftedItemName(craftedItem) + " in your crafted items.");
         }
       }
-      //if id is not valid print message to
+      // if id is not valid print message to
     } else {
       System.out.println("Invalid block number. Please enter a valid block number.");
       System.out.println(BLOCK_NUMBERS_INFO);
