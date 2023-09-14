@@ -278,6 +278,7 @@ public class JavaCraft {
           System.out.println("Secret door unlocked!");
           waitForEnter();
         } 
+        //
         //If not all requirements are met, they will all be reset
         else {
           System.out.println("Invalid passkey. Try again!");
